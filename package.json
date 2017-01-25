@@ -1,0 +1,23 @@
+{
+  "name": "fd-skype-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src\\app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "botbuilder": "^3.5.4",
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0"
+  }
+}
