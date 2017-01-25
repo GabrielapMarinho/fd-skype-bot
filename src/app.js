@@ -39,7 +39,9 @@ bot.dialog('/', function (session) {
                 new builder.HeroCard(session)
                     .title('Hero Card')
                     .subtitle('Kappa.')
-                    .text(`${session.message.address.user.name}\n ${session.message.address.channelId}\n ${session.message.address.user.id}`)
+                    .text(`Username: ${session.message.address.user.name}\n 
+                    ChannelId: ${session.message.address.channelId}\n 
+                    Conversation Id: ${session.message.address.conversation.id}`)
                     .images([
                         builder.CardImage.create(session, 'https://i.ytimg.com/vi/8kBurd4ce0A/maxresdefault.jpg')
                     ])
