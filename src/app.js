@@ -41,9 +41,9 @@ bot.dialog('/', function (session) {
                     .subtitle('Kappa.')
                     .text('text here')
                     .images([
-                        builder.CardImage.create(session, 'http://i.imgur.com/MAQm02i.gif')
+                        builder.CardImage.create(session, 'http://i.imgur.com/MAQm02i.gifv')
                     ])
-                    .tap(builder.CardAction.openUrl(session, 'https://i.ytimg.com/vi/8kBurd4ce0A/maxresdefault.jpg'))
+                    .tap(builder.CardAction.openUrl(session, 'google.pt'))
             ]);
     session.send(msg);
 /*    session.send(`Username: ${session.message.address.user.name}\n 
