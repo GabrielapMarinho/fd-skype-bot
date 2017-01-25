@@ -46,11 +46,11 @@ bot.dialog('/', function (session) {
                     .tap(builder.CardAction.openUrl(session, 'https://i.ytimg.com/vi/8kBurd4ce0A/maxresdefault.jpg'))
             ]);
     session.send(msg);
-    session.send(`Username: ${session.message.address.user.name}\n 
-    User Id: ${session.message.address.user.id}\n 
-                    ChannelId: ${session.message.address.channelId}\n 
-                     Address id: ${session.message.address.id}\n 
-                    Conversation Id: ${session.message.address.conversation.id}`);
+/*    session.send(`Username: ${session.message.address.user.name}\n 
+User Id: ${session.message.address.user.id}\n 
+ChannelId: ${session.message.address.channelId}\n 
+Address id: ${session.message.address.id}\n 
+Conversation Id: ${session.message.address.conversation.id}`);*/
 });
 
 
