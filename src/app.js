@@ -18,6 +18,7 @@ const connector = new builder.ChatConnector({
 
 const bot = new builder.UniversalBot(connector);
 
+
 app.post('/api/messages', connector.listen());
 
 connector.onEvent((event)=>{
@@ -41,7 +42,7 @@ bot.dialog('/', function (session) {
                     .subtitle('Kappa.')
                     .text('text here')
                     .images([
-                        builder.CardImage.create(session, 'http://i.imgur.com/MAQm02i.gifv')
+                        builder.CardImage.create(session, 'http://i.imgur.com/MAQm02i.gif')
                     ])
                     .tap(builder.CardAction.openUrl(session, 'google.pt'))
             ]);
