@@ -30,6 +30,7 @@ bot.on('contactRelationUpdate',(a,b,c)=>{
 
 bot.dialog('/', function (session) {
     //let img=builder.CardImage.create(session,'https://i.imgur.com/FohY4eO.jpg');
+
     sessions.push(session.message.address);
     var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.markdown)
@@ -38,7 +39,7 @@ bot.dialog('/', function (session) {
                 new builder.HeroCard(session)
                     .title('Hero Card')
                     .subtitle('Kappa.')
-                    .text('Some text here kappa.')
+                    .text(`${session.message.address.user.name}\n ${session.message.address.channelId}\n ${session.message.address.id}`)
                     .images([
                         builder.CardImage.create(session, 'https://i.ytimg.com/vi/8kBurd4ce0A/maxresdefault.jpg')
                     ])
