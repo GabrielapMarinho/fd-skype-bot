@@ -5,6 +5,8 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
+let sessions=[];
+
 app.listen(port,()=>{
     console.log(`Server listening on port ${port}.`);
 });
@@ -18,9 +20,17 @@ const bot = new builder.UniversalBot(connector);
 
 app.post('/api/messages', connector.listen());
 
+connector.onEvent((event)=>{
+    bot.receive(event);
+});
+
+bot.on('contactRelationUpdate',(a,b,c)=>{
+    console.log();
+});
+
 bot.dialog('/', function (session) {
     //let img=builder.CardImage.create(session,'https://i.imgur.com/FohY4eO.jpg');
-
+    sessions.push(session.message.address);
     var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.markdown)
             .text('`Markdown Title`')
@@ -36,3 +46,18 @@ bot.dialog('/', function (session) {
             ]);
     session.send(msg);
 });
+
+
+/*
+
+setInterval(()=>{
+    if(sessions.length>0)
+        sessions.forEach((address)=>sendMessage(address));
+},10000);*/
+
+/*function sendMessage(address){
+    var msg = new builder.Message()
+  .text('This is a Proactive message')
+  .address(address);
+    bot.send(msg); 
+}*/
