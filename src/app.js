@@ -19,5 +19,20 @@ const bot = new builder.UniversalBot(connector);
 app.post('/api/messages', connector.listen());
 
 bot.dialog('/', function (session) {
-    session.send('Hello World');
+    //let img=builder.CardImage.create(session,'https://i.imgur.com/FohY4eO.jpg');
+
+    var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.markdown)
+            .text('`Markdown Title`')
+            .attachments([
+                new builder.HeroCard(session)
+                    .title('Hero Card')
+                    .subtitle('Kappa.')
+                    .text('Some text here kappa.')
+                    .images([
+                        builder.CardImage.create(session, 'https://i.ytimg.com/vi/8kBurd4ce0A/maxresdefault.jpg')
+                    ])
+                    .tap(builder.CardAction.openUrl(session, 'https://i.ytimg.com/vi/8kBurd4ce0A/maxresdefault.jpg'))
+            ]);
+    session.send(msg);
 });
