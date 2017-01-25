@@ -41,7 +41,7 @@ bot.dialog('/', function (session) {
                     .subtitle('Kappa.')
                     .text('text here')
                     .images([
-                        builder.CardImage.create(session, 'https://i.ytimg.com/vi/8kBurd4ce0A/maxresdefault.jpg')
+                        builder.CardImage.create(session, 'http://i.imgur.com/MAQm02i.gifv')
                     ])
                     .tap(builder.CardAction.openUrl(session, 'https://i.ytimg.com/vi/8kBurd4ce0A/maxresdefault.jpg'))
             ]);
