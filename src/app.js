@@ -32,7 +32,7 @@ bot.on('contactRelationUpdate',(a,b,c)=>{
 bot.dialog('/', function (session) {
     //let img=builder.CardImage.create(session,'https://i.imgur.com/FohY4eO.jpg');
 
-    sessions.push(session.message.address);
+//    sessions.push(session.message.address);
     var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.markdown)
             .text('`Markdown Title`')
@@ -47,12 +47,14 @@ bot.dialog('/', function (session) {
                     .tap(builder.CardAction.openUrl(session, 'google.pt'))
             ]);
 
-    var att= new builder.AnimationCard(session).autoloop(true).autostart(true)
+    session.send(msg);
+
+   /* var att= new builder.AnimationCard(session).autoloop(true).autostart(true)
     .media('https://www.youtube.com/watch?v=O7WuTXB5PH4')
     .subtitle('sub here')
     .text('text here')
     .title('title here');
-    session.send(att);
+    session.send(att);*/
 /*    session.send(`Username: ${session.message.address.user.name}\n 
 User Id: ${session.message.address.user.id}\n 
 ChannelId: ${session.message.address.channelId}\n 
