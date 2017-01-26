@@ -69,12 +69,23 @@ bot.on('deleteUserData', function (message) {
 
 bot.endConversationAction('goodbye', 'Goodbye :)', { matches: /^goodbye/i });
 
-bot.beginDialogAction('photo','/photo',{ matches:/photo/i});
+bot.beginDialogAction('photo','/photo',{ matches:/^photo/i});
+
+
+let intents = new builder.IntentDialog();
+
+intents
+.matches(/^photo/i,'/photo')
+.onDefault('/default');
+
+bot.dialog('/',intents);
+
+bot.dialog('/default', (session)=>{
+    session.send('Welcome! Ask a photo! Just type `Photo`');
+}); 
 
 bot.dialog('/photo',(session)=>{
     
-    console.log(bot.name);
-
     var reply= new builder.Message(session)
     .attachments([
         new builder.HeroCard(session)
@@ -87,7 +98,3 @@ bot.dialog('/photo',(session)=>{
     session.send(reply);
 
 });
-
-bot.dialog('/', (session)=>{
-    session.send('Welcome! Ask a photo! Just type `Photo`');
-}); 
