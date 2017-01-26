@@ -94,7 +94,7 @@ bot.dialog('/photo',(session)=>{
     .attachments([
         new builder.HeroCard(session)
             .title('Awsome photo!')
-            .subtitle('Sub here.')
+            .subtitle('http://wallpaper-gallery.net/images/awesome-images/awesome-images-16.jpg')
             .text('Take this awsome photo!')
             .images([builder.CardImage.create(session,'http://wallpaper-gallery.net/images/awesome-images/awesome-images-16.jpg')])
             .buttons([builder.CardAction.openUrl(session, 'http://wallpaper-gallery.net/images/awesome-images/awesome-images-16.jpg')])
