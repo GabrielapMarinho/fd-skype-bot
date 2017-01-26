@@ -57,41 +57,35 @@ bot.on('contactRelationUpdate', function (message) {
         bot.send(reply);
     } else {
         
-        // delete their data
+        //TODO:s delete their data
     }
 });
 
 bot.on('deleteUserData', function (message) {
-    // User asked to delete their data
+    // TODO: User asked to delete their data
 });
 
 //======
 
-//bot.endConversationAction('goodbye', 'Goodbye :)', { matches: /^goodbye/i });
+/*
+**default intentThreshold is 0.1
+**on group chat the match score is < 0.1 so i had to tweak it to pass the intent match.
+**score = matched.length / context.message.text.length; botbuilder v3.5.4
+ */
+let intents = new builder
+    .IntentDialog({ intentThreshold: 0.01 })
+    .matches(/photo /i,'/photo')
+    .onDefault('/default');
 
-//bot.beginDialogAction('photo','/photo',{ matches:/^photo/i});
-
-
-let intents = new builder.IntentDialog({ intentThreshold: 0.7 });
 bot.dialog('/',intents);
 
-intents.matches(/photo/i,'/photo');
 
-intents.onDefault('/default');
-
-bot.dialog('/default', (session,args)=>{
-
-    console.log(session.message.text);
-
-    console.log(/photo/i.test(session.message.text));
-    
+bot.dialog('/default', (session)=>{
 
     session.endDialog('Welcome! Ask a photo! Just type `Photo`');
 }); 
 
-bot.dialog('/photo',(session,args)=>{
-    
-    console.log(session.message.text);
+bot.dialog('/photo',(session)=>{
 
     var reply= new builder.Message(session)
     .attachments([
