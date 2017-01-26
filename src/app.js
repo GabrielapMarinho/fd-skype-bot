@@ -73,6 +73,8 @@ bot.beginDialogAction('photo','/photo',{ matches:/photo/i});
 
 bot.dialog('/photo',(session)=>{
     
+    console.log(bot.name);
+
     var reply= new builder.Message(session)
     .attachments([
         new builder.HeroCard(session)
