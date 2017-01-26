@@ -79,16 +79,20 @@ intents.matches(/photo/i,'/photo');
 
 intents.onDefault('/default');
 
-
-bot.dialog('/default', (session)=>{
+bot.dialog('/default', (session,args)=>{
 
     console.log(session.message.text);
+
+    console.log(/photo/i.test(session.message.text));
+    
 
     session.endDialog('Welcome! Ask a photo! Just type `Photo`');
 }); 
 
-bot.dialog('/photo',(session)=>{
+bot.dialog('/photo',(session,args)=>{
     
+    console.log(session.message.text);
+
     var reply= new builder.Message(session)
     .attachments([
         new builder.HeroCard(session)
