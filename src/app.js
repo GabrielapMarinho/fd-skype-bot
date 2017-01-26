@@ -69,7 +69,7 @@ bot.on('deleteUserData', function (message) {
 
 bot.endConversationAction('goodbye', 'Goodbye :)', { matches: /^goodbye/i });
 
-bot.beginDialogAction('photo','/photo',{ matches:/^photo/i});
+bot.beginDialogAction('photo','/photo',{ matches:/photo/i});
 
 bot.dialog('/photo',(session)=>{
     
