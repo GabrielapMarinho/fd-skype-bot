@@ -76,6 +76,7 @@ let intents = new builder
     .IntentDialog({ intentThreshold: 0.01 })
     .matches(/photo/i,'/photo')
     .matches(/test/i,'/test')
+    .matches(/linktest/i,'/linktest')
     .onDefault('/default');
 
 bot.dialog('/',intents);
@@ -96,7 +97,7 @@ bot.dialog('/photo',(session)=>{
             .subtitle('Sub here.')
             .text('Take this awsome photo!')
             .images([builder.CardImage.create(session,'http://wallpaper-gallery.net/images/awesome-images/awesome-images-16.jpg')])
-            .tap(builder.CardAction.openUrl(session, 'http://www.google.pt'))
+            .buttons([builder.CardAction.openUrl(session, 'http://wallpaper-gallery.net/images/awesome-images/awesome-images-16.jpg')])
     ]);
 
     session.endDialog(reply);
@@ -115,6 +116,3 @@ bot.dialog('/test',(session)=>{
     session.endDialog(reply);
 
 });
-
-
-
