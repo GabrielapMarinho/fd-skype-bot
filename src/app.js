@@ -74,7 +74,7 @@ bot.on('deleteUserData', function (message) {
  */
 let intents = new builder
     .IntentDialog({ intentThreshold: 0.01 })
-    .matches(/photo /i,'/photo')
+    .matches(/photo/i,'/photo')
     .onDefault('/default');
 
 bot.dialog('/',intents);
