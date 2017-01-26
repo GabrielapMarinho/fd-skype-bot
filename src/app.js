@@ -5,7 +5,7 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-let sessions=[];
+//let sessions=[];
 
 app.listen(port,()=>{
     console.log(`Server listening on port ${port}.`);
@@ -20,14 +20,14 @@ const bot = new builder.UniversalBot(connector);
 
 
 app.post('/api/messages', connector.listen());
-
+/*
 connector.onEvent((event)=>{
     bot.receive(event);
 });
 
 bot.on('contactRelationUpdate',(a,b,c)=>{
     console.log();
-});
+});*/
 
 bot.dialog('/', function (session) {
     //let img=builder.CardImage.create(session,'https://i.imgur.com/FohY4eO.jpg');
