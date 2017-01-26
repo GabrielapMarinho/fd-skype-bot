@@ -81,6 +81,9 @@ intents
 bot.dialog('/',intents);
 
 bot.dialog('/default', (session)=>{
+
+    console.log(session.message.text);
+
     session.send('Welcome! Ask a photo! Just type `Photo`');
 }); 
 
