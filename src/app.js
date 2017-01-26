@@ -46,7 +46,13 @@ bot.dialog('/', function (session) {
                     ])
                     .tap(builder.CardAction.openUrl(session, 'google.pt'))
             ]);
-    session.send(msg);
+
+    var att= new builder.AnimationCard(session).autoloop(true).autostart(true)
+    .media('https://www.youtube.com/watch?v=O7WuTXB5PH4')
+    .subtitle('sub here')
+    .text('text here')
+    .title('title here');
+    session.send(att);
 /*    session.send(`Username: ${session.message.address.user.name}\n 
 User Id: ${session.message.address.user.id}\n 
 ChannelId: ${session.message.address.channelId}\n 
