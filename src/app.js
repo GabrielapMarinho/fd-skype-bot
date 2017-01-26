@@ -75,6 +75,7 @@ bot.on('deleteUserData', function (message) {
 let intents = new builder
     .IntentDialog({ intentThreshold: 0.01 })
     .matches(/photo/i,'/photo')
+    .matches(/test/i,'/test')
     .onDefault('/default');
 
 bot.dialog('/',intents);
@@ -88,14 +89,29 @@ bot.dialog('/default', (session)=>{
 bot.dialog('/photo',(session)=>{
 
     var reply= new builder.Message(session)
+    .textFormat(builder.TextFormat.markdown)
     .attachments([
         new builder.HeroCard(session)
             .title('Awsome photo!')
+            .subtitle('Sub here.')
             .text('Take this awsome photo!')
             .images([builder.CardImage.create(session,'http://wallpaper-gallery.net/images/awesome-images/awesome-images-16.jpg')])
-            .tap(builder.CardAction.openUrl(session, 'http://google.pt'))
+            .tap(builder.CardAction.openUrl(session, 'http://www.google.pt'))
     ]);
 
+    session.endDialog(reply);
+
+});
+
+
+bot.dialog('/test',(session)=>{
+
+    var reply= new builder.Message(session)
+    .textFormat(builder.TextFormat.markdown)
+    .attachments([
+        new builder.VideoCard(session)
+            .media([builder.CardMedia.create(session, 'http://video.ch9.ms/ch9/08e5/6a4338c7-8492-4688-998b-43e164d908e5/thenewmicrosoftband2_mid.mp4')])
+    ]);
     session.endDialog(reply);
 
 });
