@@ -72,7 +72,7 @@ bot.on('deleteUserData', function (message) {
 //bot.beginDialogAction('photo','/photo',{ matches:/^photo/i});
 
 
-let intents = new builder.IntentDialog();
+let intents = new builder.IntentDialog({ intentThreshold: 0.7 });
 bot.dialog('/',intents);
 
 intents.matches(/photo/i,'/photo');
