@@ -3,7 +3,7 @@ const config = require('../../configs/imgur');
 const ImgurService = require('../../services/imgur');
 const imgur = new ImgurService(config);
 
-module.exports = (session) => {
+module.exports = (session,args) => {
 
     imgur.getRandomImageFromSubReddit('pics')
     .then((image)=>{
