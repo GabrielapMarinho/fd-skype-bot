@@ -2,6 +2,8 @@ const express = require('express');
 const builder = require('botbuilder');
 const app = express();
 
+const dialogs = require('./dialogs');
+
 const port = process.env.PORT || 3000;
 
 app.listen(port,()=>{
@@ -68,52 +70,13 @@ bot.on('deleteUserData', function (message) {
 //======
 
 /*
-**default intentThreshold is 0.1
-**on group chat the match score is < 0.1 so i had to tweak it to pass the intent match.
-**score = matched.length / context.message.text.length; botbuilder v3.5.4
+    default intentThreshold is 0.1
+    on group chat the match score is < 0.1 so i had to tweak it to pass the intent match.
+    score = matched.length / context.message.text.length; botbuilder v3.5.4
  */
 let intents = new builder
     .IntentDialog({ intentThreshold: 0.01 })
-    .matches(/photo/i,'/photo')
-    .matches(/test/i,'/test')
-    .matches(/linktest/i,'/linktest')
-    .onDefault('/default');
+    .matches(/photo/i, dialogs.photoDialog)
+    .onDefault(dialogs.default);
 
 bot.dialog('/',intents);
-
-
-bot.dialog('/default', (session)=>{
-
-    session.endDialog('Welcome! Ask a photo! Just type `Photo`');
-}); 
-
-bot.dialog('/photo',(session)=>{
-
-    var reply= new builder.Message(session)
-    .textFormat(builder.TextFormat.markdown)
-    .attachments([
-        new builder.HeroCard(session)
-            .title('Awsome photo!')
-            .subtitle('http://wallpaper-gallery.net/images/awesome-images/awesome-images-16.jpg')
-            .text('Take this awsome photo!')
-            .images([builder.CardImage.create(session,'http://wallpaper-gallery.net/images/awesome-images/awesome-images-16.jpg')])
-            .tap(builder.CardAction.openUrl(session, 'http://wallpaper-gallery.net/images/awesome-images/awesome-images-16.jpg'))
-            .buttons([builder.CardAction.openUrl(session, 'http://wallpaper-gallery.net/images/awesome-images/awesome-images-16.jpg')])
-    ]);
-
-    session.endDialog(reply);
-
-});
-
-
-bot.dialog('/test',(session)=>{
-
-    var reply= new builder.Message(session)
-    .textFormat(builder.TextFormat.markdown)
-    .attachments([
-        new builder.VideoCard(session)
-            .media([builder.CardMedia.create(session, 'http://video.ch9.ms/ch9/08e5/6a4338c7-8492-4688-998b-43e164d908e5/thenewmicrosoftband2_mid.mp4')])
-    ]);
-    session.endDialog(reply);
-
-});
