@@ -1,18 +1,16 @@
 const builder = require('botbuilder');
-
-  
-
-const getRandomSubRedditFromConfigs = function(){
-    
-};
+const configs = require('../../configs/dialogs');
+const rngHelper  = require('../../helpers/rngHelper');
 
 module.exports =  (imgur)=>{
     
     return  (session,args) => {
 
-        const subreddit= (args.matched && args.matched.length>1) ? args.matched[1] :'pics';
+        const subreddit = (args.matched && args.matched.length>1) 
+                        ? args.matched[1] 
+                        : rngHelper.getRandomValueFromArray(configs.defaultSubreddits);
 
-        imgur.getRandomImageFromSubReddit(subreddit)
+        imgur.getRandomImageFromSubreddit(subreddit)
           .then((image)=>{
         
               const reply = new builder.Message(session)
@@ -35,3 +33,5 @@ module.exports =  (imgur)=>{
     };
 
 };
+
+

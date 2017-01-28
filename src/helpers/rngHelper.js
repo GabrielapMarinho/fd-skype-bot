@@ -8,9 +8,16 @@ const rngHelper = function(){
         return Math.floor(Math.random() * (max - min + 1) + min);
     };
 
+    const _getRandomValueFromArray = function(arr){
+
+        return arr[_getRandomInt(0,arr.length-1)];
+
+    };
+
     return {
         getRandom:_getRandom,
-        getRandomInt:_getRandomInt
+        getRandomInt:_getRandomInt,
+        getRandomValueFromArray:_getRandomValueFromArray
     };
 };
 
