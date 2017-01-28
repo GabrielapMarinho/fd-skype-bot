@@ -1,11 +1,19 @@
+//External dependencies
 const express = require('express');
 const builder = require('botbuilder');
-const app = express();
 
+
+//Dialogs
 const dialogs = require('./dialogs');
+
+//internal dependencies
+const config = require('./configs/imgur');
+const ImgurService = require('./services/imgur');
+const imgur = new ImgurService(config);
 
 const port = process.env.PORT || 3000;
 
+const app = express();
 app.listen(port,()=>{
     console.log(`Server listening on port ${port}.`);
 });
@@ -76,7 +84,11 @@ bot.on('deleteUserData', function (message) {
  */
 let intents = new builder
     .IntentDialog({ intentThreshold: 0.01 })
-    .matches(/photo/i, dialogs.photoDialog)
+    .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/], dialogs.photoDialog(imgur))
     .onDefault(dialogs.default);
 
 bot.dialog('/',intents);
+
+bot.dialog('/test',(session,args)=>{
+    session.endDialog(JSON.stringify(args));
+});
