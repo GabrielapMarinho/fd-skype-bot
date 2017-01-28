@@ -34,7 +34,7 @@ ImgurService.prototype.getRandomImageFromSubReddit = function(subReddit){
     return this.getSubredditGallery(subReddit)
     .then((response)=>{
 
-        if(!response || !response.data)
+        if(!response || !response.data || response.data.length === 0)
             return Promise.reject('No response data.');
 
         const index= getRandomInt(0,response.data.data.length);
