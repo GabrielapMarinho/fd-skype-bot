@@ -1,5 +1,5 @@
 # Skype Bot 
 
 [ ] - Add scheduler.
-[ ] - Add imgur client.
+[x] - Add imgur client.
 [ ] - Add config file support.
