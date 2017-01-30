@@ -89,6 +89,3 @@ let intents = new builder
 
 bot.dialog('/',intents);
 
-bot.dialog('/test',(session,args)=>{
-    session.endDialog(JSON.stringify(args));
-});
