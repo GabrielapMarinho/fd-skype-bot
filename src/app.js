@@ -72,6 +72,7 @@ bot.on('contactRelationUpdate', function (message) {
 });
 
 bot.on('deleteUserData', function (message) {
+    console.log(message);
     // TODO: User asked to delete their data
 });
 
