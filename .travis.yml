@@ -1,22 +1,17 @@
 language: node_js
 node_js:
 - stable
-##services:
-##- mongodb
 before_script:
 - npm i -g mocha
 - npm i -g istanbul
-##- node src/db/dbSeed.js
 script:
 - istanbul cover _mocha -- -R spec --recursive
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: heroku
   app:
     develop: dev-fd-skype-bot
     master: prd-fd-skype-bot
-##  run:
-##  - node src/db/dbSeed.js
   api_key:
-    secure: D27uMhDh1fNyJiBM2fl++k1F2fFDZLjowhxzMvGn5b+pkLWxdnAdK1RgU01EdFiBpcjiR6mpCCXxvOLGV6Gkcj23Gz3g83GNlnZIL5zti1DJ+JVilzTxglTIrn4//PdX8rtnbFrfDurmspF+p4thrWrymK1CmB+FEZlyb8QMPGndaCRDKDMngVHuXQlZHYrl4JdeqOHycHqCwHs0gq1WHOXPW7HWD3zRDfckk679RaCSY/J1GAZYqSjhbMqEBSlDiLUHfyjv8099mFCwLbOKARaSzGHJMFv3h0H9S4Cn9PZcCcl5SSofImfX4dVWJaCjaciSySsAm7AfmJV7tatO+p4VN2AayN9MjVhiSmk1paHhAYyi0Tz9/ra/zTbclr1n4MgvX7GKE8jUVsEzfqXmxvo88ddP0dM3FV/xRqX0rt+MeSGPbUvQFqSz1SuqxMAYBK2Tn0adSitOwrEtlRIeQVQVAg/Xb305inq5lAh1Tiy4OELZNDIjLvTdpflEJ8OWUQ48+2Pyfjyzg0UN2tX1aFXd7ryhPFdSyog2h344pJlMNKlsGBaTWvmSRI4Z1/Gg9TItkl3V7uaPSYLZID4Wq87oqFQIYA9Pi5kXQR9Mk5FHvI4flpeOIOQw78E21FernQmYtExI0jn5lKIcXChJlWICpWRNECPY6Hisq3AZK+0=
+    secure: SHaDfDUGegbIyLGrUQBgwYPQ/I2s+KComqiFy/giiVFtMZyJGDSh1Gm/Sag/2Y9mggE73NxdfC4VBVt76XFg4NwxhPpm7i6ynkuCHjcFj5CK9XWvnYrCaaPP9LJaAxH0JZU/tdb7UbjUhOkm5pA8msXOQrXhdx05Qo8jIgS83DwkodqMGeWGclPxmi62DfTuQPgyB+ybleFBRn5AD3ZGm8oIwv5LTVTbPfK0FIeXHKczxg8cMJxaY0N5Rg5QxsEWUuo3B9yCbsBBXrKaH6snLkHOCMuWBucFMxl2dnZv2g1FFuHSYdfaAZrSStzHP9WyS0fPuB/5l3uS+WAtbqx7SCDcNa5ZuoN6a8ALhMxrJQ6/Ep78oEdyx6uag5IqVimqBbh1U3zIExQxc9fY5hmIUtIJo4vDLTfe8qKQxuTyLWFm3Lk+ma8VRBzPrycinhTm3W5PIwLFfOFu8m94m65ainyT6YgwN6La5rHvfevVqoJrBWrFq7gx73HLEY6Agf3oMTNE5cLvy8F2Y6Rkp0w94o3aCOK7ozU+pxUgrX409OmC1YznCN1gkU35O+E4qHXs3a5eldJX4QPGvLlwakUFrxBRRbmNOdc1o4O3d9Wt6pzZgDe0No0H6ML0zD5uC//xtlXs/4jNNc8Xg8UUKnmRFN2eeMSwrJSYZPRIFb2zcvs=
