@@ -86,6 +86,9 @@ bot.on('deleteUserData', function (message) {
 let intents = new builder
     .IntentDialog({ intentThreshold: 0.01 })
     .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/], dialogs.photoDialog(imgur))
+    .matches(/(?:debug)/,(session)=>{
+        session.endDialog(session.message.user.name +' '+session.message.user.id);
+    })
     .onDefault(dialogs.default);
 
 bot.dialog('/',intents);
