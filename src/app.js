@@ -87,7 +87,9 @@ let intents = new builder
     .IntentDialog({ intentThreshold: 0.01 })
     .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/], dialogs.photoDialog(imgur))
     .matches(/(?:debug)/,(session)=>{
-        session.endDialog(session.message.user.name +' '+session.message.user.id);
+        session.userData.name=session.message.user.name;
+        session.endDialog(session.message.user.name +' '+session.message.user.id+' '+JSON.stringify(session.userData.stats));
+
     })
     .onDefault(dialogs.default);
 

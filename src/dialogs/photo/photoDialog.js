@@ -5,10 +5,15 @@ const rngHelper  = require('../../helpers/rngHelper');
 module.exports =  (imgur)=>{
     
     return  (session,args) => {
+        
+        
 
         const subreddit = (args.matched && args.matched.length>1) 
                         ? args.matched[1] 
                         : rngHelper.getRandomValueFromArray(configs.defaultSubreddits);
+
+
+        _updateStats(session,subreddit);
 
         imgur.getRandomImageFromSubreddit(subreddit)
           .then((image)=>{
@@ -35,3 +40,15 @@ module.exports =  (imgur)=>{
 };
 
 
+const _updateStats =function(session,subreddit){
+    if(session.message && session.message.user)
+        session.userData.userName = session.message.user.name || 'John Doe';
+        
+    if(!session.userData.stats)
+        session.userData.stats={};
+
+    if( !session.userData.stats[subreddit] )
+        session.userData.stats[subreddit] =1;
+    else
+      session.userData.stats[subreddit] ++; 
+};
