@@ -15,7 +15,7 @@ describe('#Imgur Serice Test.',()=>{
     });
 
     it('Subreddit random image from gallery.',(done)=>{
-        imgur.getRandomImageFromSubReddit('pics')
+        imgur.getRandomImageFromSubreddit('pics')
         .then((data)=>{
             if(data)
                 done(); 
