@@ -14,7 +14,7 @@ after_success:
 deploy:
   provider: heroku
   app:
-    development: dev-fd-skype-bot
+    develop: dev-fd-skype-bot
     master: prd-fd-skype-bot
 ##  run:
 ##  - node src/db/dbSeed.js
