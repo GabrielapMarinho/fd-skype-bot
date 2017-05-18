@@ -1,12 +1,6 @@
-const axios = require('axios');
-
-const ImgurService = function(config){
+const ImgurService = function(httpClient){
   
-    this.client = axios.create({
-        baseURL: config.baseUrl,
-        timeout: config.timeout,
-        headers: {'Authorization': `Client-ID ${config.clientID}`}
-    });  
+    this.client = httpClient;
 
 };
 

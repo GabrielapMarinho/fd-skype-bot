@@ -1,13 +1,9 @@
-const builder = require('botbuilder');
-const configs = require('../../configs/dialogs');
-const rngHelper  = require('../../helpers/rngHelper');
 
-module.exports =  (imgur)=>{
+
+module.exports =  (imgur,builder,configs,rngHelper)=>{
     
     return  (session,args) => {
         
-        
-
         const subreddit = (args.matched && args.matched.length>1) 
                         ? args.matched[1] 
                         : rngHelper.getRandomValueFromArray(configs.defaultSubreddits);
@@ -40,7 +36,7 @@ module.exports =  (imgur)=>{
 };
 
 
-const _updateStats =function(session,subreddit){
+const _updateStats = function(session,subreddit){
     if(session.message && session.message.user)
         session.userData.userName = session.message.user.name || 'John Doe';
         

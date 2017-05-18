@@ -1,17 +1,27 @@
+//configs
+const imgurConfigs = require('./configs/imgur');
+const dialogConfigs = require('./configs/dialogs');
+const pjson = require('../package.json');
+
 //External dependencies
 const express = require('express');
 const builder = require('botbuilder');
+const axios = require('axios');
+const httpClient = axios.create({
+    baseURL: imgurConfigs.baseUrl,
+    timeout: imgurConfigs.timeout,
+    headers: {'Authorization': `Client-ID ${imgurConfigs.clientID}`}
+});  
+
+//internal dependencies
+const ImgurService = require('./services/imgur');
+const rngHelper  = require('./helpers/rngHelper');
+const imgur = new ImgurService(httpClient);
+const port = process.env.PORT || 3000;
 
 
 //Dialogs
-const dialogs = require('./dialogs');
-
-//internal dependencies
-const config = require('./configs/imgur');
-const ImgurService = require('./services/imgur');
-const imgur = new ImgurService(config);
-
-const port = process.env.PORT || 3000;
+const dialogs = require('./dialogs')(imgur,builder,dialogConfigs,rngHelper);
 
 const app = express();
 app.listen(port,()=>{
@@ -85,10 +95,20 @@ bot.on('deleteUserData', function (message) {
  */
 let intents = new builder
     .IntentDialog({ intentThreshold: 0.01 })
-    .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/], dialogs.photoDialog(imgur))
+    .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/], dialogs.photoDialog)
     .matches(/(?:debug)/,(session)=>{
         session.userData.name=session.message.user.name;
-        session.endDialog(session.message.user.name +' '+session.message.user.id+' '+JSON.stringify(session.userData.stats));
+        
+        session.endDialog(`-Bot version ${pjson.version}.
+        - Username: ${session.message.user.name}.
+        - UserId: ${session.message.user.id}.
+        - Requests Stats: ${JSON.stringify(session.userData.stats)}.`);
+
+
+    })
+    .matches(/(?:clear)/,(session)=>{
+        session.userData=null;
+        session.endDialog('User data cleared.');
 
     })
     .onDefault(dialogs.default);

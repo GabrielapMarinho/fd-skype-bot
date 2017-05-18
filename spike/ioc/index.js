@@ -1,14 +1,9 @@
-
 const IoC = function(){
     this.container = {};
-
-   /* this.container.resolve=function(dependency){
-        return this.container[dependency];
-    };*/
 };
 
 IoC.prototype.install = function(installer){
-    installer.install(this.container);
+    installer.install(this);
 };
 
 IoC.prototype.register = function (name,impl){
