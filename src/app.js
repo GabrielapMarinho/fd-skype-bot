@@ -8,9 +8,9 @@ const express = require('express');
 const builder = require('botbuilder');
 const axios = require('axios');
 const httpClient = axios.create({
-    baseURL: imgurConfigs.baseUrl,
-    timeout: imgurConfigs.timeout,
-    headers: {'Authorization': `Client-ID ${imgurConfigs.clientID}`}
+  baseURL: imgurConfigs.baseUrl,
+  timeout: imgurConfigs.timeout,
+  headers: {'Authorization': `Client-ID ${imgurConfigs.clientID}`}
 });  
 
 //internal dependencies
@@ -25,12 +25,12 @@ const dialogs = require('./dialogs')(imgur,builder,dialogConfigs,rngHelper);
 
 const app = express();
 app.listen(port,()=>{
-    console.log(`Server listening on port ${port}.`);
+  console.log(`Server listening on port ${port}.`);
 });
 
 const connector = new builder.ChatConnector({
-    appId: process.env.MICROSOFT_APP_ID,
-    appPassword: process.env.MICROSOFT_APP_PASSWORD
+  appId: process.env.MICROSOFT_APP_ID,
+  appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
 const bot = new builder.UniversalBot(connector);
@@ -41,48 +41,48 @@ app.post('/api/messages', connector.listen());
 
 bot.on('conversationUpdate', function (message) {
    // Check for group conversations
-    if (message.address.conversation.isGroup) {
+  if (message.address.conversation.isGroup) {
         // Send a hello message when bot is added
-        if (message.membersAdded) {
-            message.membersAdded.forEach(function (identity) {
-                if (identity.id === message.address.bot.id) {
-                    var reply = new builder.Message()
+    if (message.membersAdded) {
+      message.membersAdded.forEach(function (identity) {
+        if (identity.id === message.address.bot.id) {
+          var reply = new builder.Message()
                             .address(message.address)
                             .text('Hello everyone!');
-                    bot.send(reply);
-                }
-            });
+          bot.send(reply);
         }
+      });
+    }
 
         // Send a goodbye message when bot is removed
-        if (message.membersRemoved) {
-            message.membersRemoved.forEach(function (identity) {
-                if (identity.id === message.address.bot.id) {
-                    var reply = new builder.Message()
+    if (message.membersRemoved) {
+      message.membersRemoved.forEach(function (identity) {
+        if (identity.id === message.address.bot.id) {
+          var reply = new builder.Message()
                         .address(message.address)
                         .text('Goodbye');
-                    bot.send(reply);
-                }
-            });
+          bot.send(reply);
         }
+      });
     }
+  }
 });
 
 bot.on('contactRelationUpdate', function (message) {
-    if (message.action === 'add') {
-        var name = message.user ? message.user.name : null;
-        var reply = new builder.Message()
+  if (message.action === 'add') {
+    var name = message.user ? message.user.name : null;
+    var reply = new builder.Message()
                 .address(message.address)
                 .text('Hello %s! Thanks for adding me.', name || 'there');
-        bot.send(reply);
-    } else {
+    bot.send(reply);
+  } else {
         
         //TODO:s delete their data
-    }
+  }
 });
 
 bot.on('deleteUserData', function (message) {
-    console.log(message);
+  console.log(message);
     // TODO: User asked to delete their data
 });
 
@@ -97,9 +97,9 @@ let intents = new builder
     .IntentDialog({ intentThreshold: 0.01 })
     .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/], dialogs.photoDialog)
     .matches(/(?:debug)/,(session)=>{
-        session.userData.name=session.message.user.name;
+      session.userData.name=session.message.user.name;
         
-        session.endDialog(`-Bot version ${pjson.version}.
+      session.endDialog(`-Bot version ${pjson.version}.
         - Username: ${session.message.user.name}.
         - UserId: ${session.message.user.id}.
         - Requests Stats: ${JSON.stringify(session.userData.stats)}.`);
@@ -107,8 +107,8 @@ let intents = new builder
 
     })
     .matches(/(?:clear)/,(session)=>{
-        session.userData=null;
-        session.endDialog('User data cleared.');
+      session.userData=null;
+      session.endDialog('User data cleared.');
 
     })
     .onDefault(dialogs.default);
