@@ -1,7 +1,12 @@
 const ImgurService = require('../src/services/imgur');
-
-const config = require('../src/configs/imgur');
-const imgur = new ImgurService(config);
+const imgurConfigs = require('../src/configs/imgur');
+const axios = require('axios');
+const httpClient = axios.create({
+    baseURL: imgurConfigs.baseUrl,
+    timeout: imgurConfigs.timeout,
+    headers: {'Authorization': `Client-ID ${imgurConfigs.clientID}`}
+});  
+const imgur = new ImgurService(httpClient);
 
 describe('#Imgur Serice Test.',()=>{
 
