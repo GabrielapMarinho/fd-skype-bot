@@ -48,7 +48,7 @@ bot.on('conversationUpdate', function (message) {
         if (identity.id === message.address.bot.id) {
           var reply = new builder.Message()
                             .address(message.address)
-                            .text('Hello everyone!');
+                            .text(`Hello ${identity.name}!`);
           bot.send(reply);
         }
       });
