@@ -1,8 +1,7 @@
-
-
 module.exports =  (imgur,builder,configs,rngHelper)=>{
-    
-  return  (session,args) => {
+
+  const _photoDialog = function(session,args){
+
         
     const subreddit = (args.matched && args.matched.length>1) 
                         ? args.matched[1] 
@@ -31,7 +30,13 @@ module.exports =  (imgur,builder,configs,rngHelper)=>{
     })
     .catch(()=>{session.endDialog('Sorry could not find a photo from that category.');});
 
+
   };
+    
+  return{
+    photo:_photoDialog
+  };
+
 
 };
 

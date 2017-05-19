@@ -1,5 +1,11 @@
+## node_modules folder
 node_modules
 
+## vscode folder
 .vscode 
 
+## node debug folder
 npm-debug.log
+
+## code coverage folder
+coverage

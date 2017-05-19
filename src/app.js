@@ -21,7 +21,7 @@ const port = process.env.PORT || 3000;
 
 
 //Dialogs
-const dialogs = require('./dialogs')(imgur,builder,dialogConfigs,rngHelper);
+const dialogs = require('./dialogs')(imgur,builder,dialogConfigs,rngHelper,pjson);
 
 const app = express();
 app.listen(port,()=>{
@@ -76,7 +76,6 @@ bot.on('contactRelationUpdate', function (message) {
                 .text('Hello %s! Thanks for adding me.', name || 'there');
     bot.send(reply);
   } else {
-        
         //TODO:s delete their data
   }
 });
@@ -95,22 +94,9 @@ bot.on('deleteUserData', function (message) {
  */
 let intents = new builder
     .IntentDialog({ intentThreshold: 0.01 })
-    .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/], dialogs.photoDialog)
-    .matches(/(?:debug)/,(session)=>{
-      session.userData.name=session.message.user.name;
-        
-      session.endDialog(`-Bot version ${pjson.version}.
-        - Username: ${session.message.user.name}.
-        - UserId: ${session.message.user.id}.
-        - Requests Stats: ${JSON.stringify(session.userData.stats)}.`);
-
-
-    })
-    .matches(/(?:clear)/,(session)=>{
-      session.userData=null;
-      session.endDialog('User data cleared.');
-
-    })
+    .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/], dialogs.photoDialogs.photo)
+    .matchesAny([/(?:^|\s)(?:debug)/i],dialogs.debugDialogs.debug)
+    .matches(/(?:^|\s)(?:debug)(?:\s)+(?:clear)/,dialogs.debugDialogs.clearData)
     .onDefault(dialogs.default);
 
 bot.dialog('/',intents);
