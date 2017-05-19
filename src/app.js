@@ -66,6 +66,20 @@ bot.on('conversationUpdate', function (message) {
       });
     }
   }
+  else{
+    if (message.membersAdded) {
+      message.membersAdded.forEach(function (identity) {
+        if (identity.id !== message.address.bot.id) {
+          var reply = new builder.Message()
+                            .address(message.address)
+                            .text(`Hello ${identity.name}!`);
+          bot.send(reply);
+        }
+      }); 
+    }
+  }
+
+
 });
 
 bot.on('contactRelationUpdate', function (message) {
