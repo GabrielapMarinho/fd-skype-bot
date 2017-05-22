@@ -1,5 +1,6 @@
 //configs
 const imgurConfigs = require('./configs/imgur');
+const chuckNorrisConfigs = require('./configs/chucknorris');
 const dialogConfigs = require('./configs/dialogs');
 const pjson = require('../package.json');
 
@@ -7,21 +8,30 @@ const pjson = require('../package.json');
 const express = require('express');
 const builder = require('botbuilder');
 const axios = require('axios');
-const httpClient = axios.create({
+
+// apis http clients
+const imgurHttpClient = axios.create({
   baseURL: imgurConfigs.baseUrl,
   timeout: imgurConfigs.timeout,
   headers: {'Authorization': `Client-ID ${imgurConfigs.clientID}`}
 });  
 
+const chuckNorrisHttpClient = axios.create({
+  baseURL: chuckNorrisConfigs.baseUrl,
+  timeout: chuckNorrisConfigs.timeout,
+}); 
+
 //internal dependencies
 const ImgurService = require('./services/imgur');
+const ChuckNorrisService = require('./services/chucknorris');
 const rngHelper  = require('./helpers/rngHelper');
-const imgur = new ImgurService(httpClient);
+const imgur = new ImgurService(imgurHttpClient);
+const chuckNorris = new ChuckNorrisService(chuckNorrisHttpClient);
 const port = process.env.PORT || 3000;
 
 
 //Dialogs
-const dialogs = require('./dialogs')(imgur,builder,dialogConfigs,rngHelper,pjson);
+const dialogs = require('./dialogs')(imgur,chuckNorris,builder,dialogConfigs,rngHelper,pjson);
 
 const app = express();
 app.listen(port,()=>{
@@ -109,6 +119,10 @@ bot.on('deleteUserData', function (message) {
 let intents = new builder
     .IntentDialog({ intentThreshold: 0.01 })
     .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/], dialogs.photoDialogs.photo)
+    .matchesAny([/(?:^|\s)(?:chuck norris)$/i],dialogs.chuckNorrisDialogs.default)
+    .matchesAny([/(?:^|\s)(?:chuck norris categories)$/i],dialogs.chuckNorrisDialogs.categories)
+    .matchesAny([/(?:^|\s)(?:chuck norris joke)(?:\s)+([a-z_]+)$/i,/(?:^|\s)(?:cnj)(?:\s)+([a-z_]+)$/i,
+      /(?:^|\s)(?:chuck norris joke)/,/(?:^|\s)(?:cnj)/],dialogs.chuckNorrisDialogs.joke)
     .matchesAny([/(?:^|\s)(?:debug)/i],dialogs.debugDialogs.debug)
     .matches(/(?:^|\s)(?:debug)(?:\s)+(?:clear)/,dialogs.debugDialogs.clearData)
     .onDefault(dialogs.default);
