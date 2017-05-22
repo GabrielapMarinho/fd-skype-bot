@@ -33,8 +33,13 @@ module.exports =  (imgur,builder,configs,rngHelper)=>{
 
   };
     
+  const _default = function(session) {
+    session.endDialog('Type `Photo` or `Photo [subreddit]` to get a random photo.');
+  };
+
   return{
-    photo:_photoDialog
+    photo:_photoDialog,
+    default:_default
   };
 
 

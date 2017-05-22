@@ -48,6 +48,40 @@ describe('#Chuck Norris Service Test (Chuck norris is testing the bot ofc...)',(
 
   });
 
+  it('Should return a joke data from given category when request is done with success.',(done)=>{
+
+    const chuckNorris = new ChuckNorrisService(httpClientToPass);
+    chuckNorris.getJoke('category')
+      .then((data)=>{
+
+        assert.isNotNull(data);
+        done();
+
+      }).catch((err)=>{
+        
+        done(err);
+        
+      });
+
+  });
+
+  it('Should return a random joke data when request is done with success without a category.',(done)=>{
+
+    const chuckNorris = new ChuckNorrisService(httpClientToPass);
+    chuckNorris.getJoke()
+      .then((data)=>{
+
+        assert.isNotNull(data);
+        done();
+
+      }).catch((err)=>{
+        
+        done(err);
+        
+      });
+
+  }); 
+
 
   it('Should reject promise when request is done with error',(done)=>{
 

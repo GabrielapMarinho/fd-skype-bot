@@ -11,6 +11,14 @@ describe('#Imgur Serice Test.',()=>{
     }
   };
 
+  const httpClientToFail = {
+    request:()=>{
+      return new Promise((resolve)=>{
+        resolve();
+      });
+    }
+  };
+
 
   it('Subreddit image gallery request.',(done)=>{
 
@@ -32,6 +40,21 @@ describe('#Imgur Serice Test.',()=>{
         .then((data)=>{
           if(data)
             done(); 
+        });
+
+  });
+
+  it('No data from gallery.',(done)=>{
+
+    const imgur = new ImgurService(httpClientToFail);
+
+    imgur.getRandomImageFromSubreddit('pics')
+        .then((data)=>{
+         
+          done(data); 
+        })
+        .catch(()=>{
+          done();
         });
 
   });

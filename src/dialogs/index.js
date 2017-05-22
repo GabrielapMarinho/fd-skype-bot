@@ -4,7 +4,7 @@ const DebugDialogHandler = require('./debug/debugDialogHandler');
 const ChuckNorrisDialogHandler = require('./chucknorris/chuckNorrisDialogHandler');
 
 const defaultDialog = function(session){
-  session.endDialog('Hello! To request a photo, just type `photo` or `photo category`.');
+  session.endDialog('Hello! Type `help` to get more info about available commands.');
 };
 
 module.exports = function(imgur,chuckNorris,builder,configs,rngHelper,pjson){
@@ -16,7 +16,8 @@ module.exports = function(imgur,chuckNorris,builder,configs,rngHelper,pjson){
 
   return{
     photoDialogs:{
-      photo:photoDialogHandler.photo
+      photo:photoDialogHandler.photo,
+      default:photoDialogHandler.default
     },
     debugDialogs:{
       debug:debugDialogHandler.debug,

@@ -56,9 +56,10 @@ const buildRequestUrl=function(random,category){
 
 const _request = function(httpClient,url){
   return new Promise((resolve,reject)=>{
-  
+    
     httpClient.request({
       url:url,
+      method:'get',
       transformResponse: (data) => {
         
         try{

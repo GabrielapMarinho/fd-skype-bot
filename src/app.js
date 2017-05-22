@@ -118,13 +118,14 @@ bot.on('deleteUserData', function (message) {
  */
 let intents = new builder
     .IntentDialog({ intentThreshold: 0.01 })
-    .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/], dialogs.photoDialogs.photo)
-    .matchesAny([/(?:^|\s)(?:chuck norris)$/i],dialogs.chuckNorrisDialogs.default)
-    .matchesAny([/(?:^|\s)(?:chuck norris categories)$/i],dialogs.chuckNorrisDialogs.categories)
+    .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/i], dialogs.photoDialogs.photo)
+    .matchesAny([/(?:^|\s)(?:photo$)/i], dialogs.photoDialogs.default)
+    .matchesAny([/(?:^|\s)(?:chuck norris)$/i,/(?:^|\s)(?:cn)$/i],dialogs.chuckNorrisDialogs.default)
+    .matchesAny([/(?:^|\s)(?:chuck norris categories)$/i,/(?:^|\s)(?:cnc)$/i],dialogs.chuckNorrisDialogs.categories)
     .matchesAny([/(?:^|\s)(?:chuck norris joke)(?:\s)+([a-z_]+)$/i,/(?:^|\s)(?:cnj)(?:\s)+([a-z_]+)$/i,
-      /(?:^|\s)(?:chuck norris joke)/,/(?:^|\s)(?:cnj)/],dialogs.chuckNorrisDialogs.joke)
+      /(?:^|\s)(?:chuck norris joke)/i,/(?:^|\s)(?:cnj)/i],dialogs.chuckNorrisDialogs.joke)
     .matchesAny([/(?:^|\s)(?:debug)/i],dialogs.debugDialogs.debug)
-    .matches(/(?:^|\s)(?:debug)(?:\s)+(?:clear)/,dialogs.debugDialogs.clearData)
+    .matches(/(?:^|\s)(?:debug)(?:\s)+(?:clear)/i,dialogs.debugDialogs.clearData)
     .onDefault(dialogs.default);
 
 bot.dialog('/',intents);
