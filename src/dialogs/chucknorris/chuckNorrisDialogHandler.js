@@ -24,7 +24,7 @@ module.exports =  (chuckNorris,builder)=>{
 
     chuckNorris.getJoke(category).then((response)=>{
  
-      const subtite = response.data.category ? response.data.category.map((c)=>`#${c}`).join(' ') : '#random';
+      /*const subtite = response.data.category ? response.data.category.map((c)=>`#${c}`).join(' ') : '#random';
       const reply = new builder.Message(session)
                     .textFormat(builder.TextFormat.markdown)
                          .attachments([
@@ -35,9 +35,9 @@ module.exports =  (chuckNorris,builder)=>{
                           .images([builder.CardImage.create(session, 'http://cdn.business2community.com/wp-content/uploads/2016/03/Vd3MJo.jpg')])
                           
                          ]);
-                    
+                    */
 
-      session.endDialog(reply);
+      session.endDialog(response.data.value);
 
     })
     .catch((err)=>{
