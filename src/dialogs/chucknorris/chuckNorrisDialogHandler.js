@@ -6,9 +6,9 @@ module.exports =  (chuckNorris,builder)=>{
     chuckNorris.getCategories()
     .then((response)=>{
  
-      const categories=response.data.map((c)=>`* ${c}\n\n`).join('');
+      const categories=response.data.map((c)=>`* ${c}\n`).join('');
       const reply = new builder.Message(session)
-        .textFormat(builder.TextFormat.markdown).text(`### Categories that can handle Chuck Norris:\n${categories}`);
+        .textFormat(builder.TextFormat.markdown).text(`### Categories that can handle Chuck Norris:\n\n${categories}`);
 
       session.endDialog(reply);
 
