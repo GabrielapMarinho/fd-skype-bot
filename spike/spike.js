@@ -1,28 +1,19 @@
-const express = require('express');
-const builder = require('botbuilder');
-const app = express();
+const axios = require('axios');
+const ChuckNorrisService = require('../src/services/chucknorris');
 
-const port = process.env.PORT || 3000;
+const httpClient = axios.create({
+  baseURL: 'https://api.chucknorris.io/jokes/',
+  timeout: 5000
+});  
 
-app.listen(port,()=>{
-  console.log(`Server listening on port ${port}.`);
+const service = new ChuckNorrisService(httpClient);
+
+service.getCategories()
+.then((data)=>{
+  console.log(data.data);
 });
 
-const connector = new builder.ChatConnector({
-  appId: process.env.MICROSOFT_APP_ID,
-  appPassword: process.env.MICROSOFT_APP_PASSWORD
+service.getJoke('dev')
+.then((data)=>{
+  console.log(data.data);
 });
-
-const bot = new builder.UniversalBot(connector);
-
-app.post('/api/messages', connector.listen());
-
-
-bot.dialog('/',(session)=>{
-
-   
-  var x= new builder.Message(session).addAttachment({contentUrl:'https://i.imgur.com/4FKYAMf.jpg',alt:'dog',contentType:'image/jpeg'});
-   // var msg = {url:'https://i.imgur.com/4FKYAMf.jpg',alt:'dog'};
-  session.send(x);
-    
-}); 
