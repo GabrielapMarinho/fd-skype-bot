@@ -126,6 +126,7 @@ let intents = new builder
       /(?:^|\s)(?:chuck norris joke)/i,/(?:^|\s)(?:cnj)/i],dialogs.chuckNorrisDialogs.joke)
     .matchesAny([/(?:^|\s)(?:debug)/i],dialogs.debugDialogs.debug)
     .matches(/(?:^|\s)(?:debug)(?:\s)+(?:clear)/i,dialogs.debugDialogs.clearData)
+    .matchesAny([/(?:^|\s)(?:help)/i],dialogs.help.help)
     .onDefault(dialogs.default);
 
 bot.dialog('/',intents);

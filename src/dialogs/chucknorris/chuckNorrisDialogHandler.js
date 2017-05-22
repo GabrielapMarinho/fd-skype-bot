@@ -8,7 +8,7 @@ module.exports =  (chuckNorris,builder)=>{
  
       const categories=response.data.map((c)=>`* ${c}\n\n`).join('');
       const reply = new builder.Message(session)
-        .textFormat(builder.TextFormat.markdown).text(`### Categories that can handle Chuck Norris:\n\n${categories}`);
+        .textFormat(builder.TextFormat.markdown).text(`### Categories that can handle Chuck Norris:\n${categories}`);
 
       session.endDialog(reply);
 
@@ -32,7 +32,7 @@ module.exports =  (chuckNorris,builder)=>{
                           .title('Chuck Norris!')
                           .subtitle(subtite)
                           .text(response.data.value)
-                          .images([builder.CardImage.create(session, response.data.icon_url)])
+                          .images([builder.CardImage.create(session, 'http://cdn.business2community.com/wp-content/uploads/2016/03/Vd3MJo.jpg')])
                           
                          ]);
                     
