@@ -1,7 +1,5 @@
 //configs
-const imgurConfigs = require('./configs/imgur');
-const chuckNorrisConfigs = require('./configs/chucknorris');
-const dialogConfigs = require('./configs/dialogs');
+const configs = require('./configs');
 const pjson = require('../package.json');
 
 //External dependencies
@@ -9,30 +7,30 @@ const express = require('express');
 const builder = require('botbuilder');
 const axios = require('axios');
 
-// apis http clients
-const imgurHttpClient = axios.create({
-  baseURL: imgurConfigs.baseUrl,
-  timeout: imgurConfigs.timeout,
-  headers: {'Authorization': `Client-ID ${imgurConfigs.clientID}`}
-});  
-
-const chuckNorrisHttpClient = axios.create({
-  baseURL: chuckNorrisConfigs.baseUrl,
-  timeout: chuckNorrisConfigs.timeout,
-}); 
-
 //internal dependencies
 const ImgurService = require('./services/imgur');
 const ChuckNorrisService = require('./services/chucknorris');
 const rngHelper  = require('./helpers/rngHelper');
+
+//api http clients
+const imgurHttpClient = axios.create({
+  baseURL: configs.imgur.baseUrl,
+  timeout: configs.imgur.timeout,
+  headers: {'Authorization': `Client-ID ${configs.imgur.clientID}`}
+});  
+
+const chuckNorrisHttpClient = axios.create({
+  baseURL: configs.chucknorris.baseUrl,
+  timeout: configs.chucknorris.timeout,
+}); 
+
 const imgur = new ImgurService(imgurHttpClient);
 const chuckNorris = new ChuckNorrisService(chuckNorrisHttpClient);
-const port = process.env.PORT || 3000;
-
 
 //Dialogs
-const dialogs = require('./dialogs')(imgur,chuckNorris,builder,dialogConfigs,rngHelper,pjson);
+const dialogs = require('./dialogs')(imgur,chuckNorris,builder,configs.dialogs,rngHelper,pjson);
 
+const port = process.env.PORT || 3000;
 const app = express();
 app.listen(port,()=>{
   console.log(`Server listening on port ${port}.`);
@@ -48,7 +46,6 @@ const bot = new builder.UniversalBot(connector);
 app.post('/api/messages', connector.listen());
 
 //=================================
-
 bot.on('conversationUpdate', function (message) {
    // Check for group conversations
   if (message.address.conversation.isGroup) {
@@ -64,7 +61,7 @@ bot.on('conversationUpdate', function (message) {
       });
     }
 
-        // Send a goodbye message when bot is removed
+     // Send a goodbye message when bot is removed
     if (message.membersRemoved) {
       message.membersRemoved.forEach(function (identity) {
         if (identity.id === message.address.bot.id) {
@@ -88,7 +85,6 @@ bot.on('conversationUpdate', function (message) {
       }); 
     }
   }
-
 
 });
 
@@ -118,14 +114,18 @@ bot.on('deleteUserData', function (message) {
  */
 let intents = new builder
     .IntentDialog({ intentThreshold: 0.01 })
+    //photo command
     .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/i], dialogs.photoDialogs.photo)
     .matchesAny([/(?:^|\s)(?:photo$)/i], dialogs.photoDialogs.default)
+    //chuck norris command
     .matchesAny([/(?:^|\s)(?:chuck norris)$/i,/(?:^|\s)(?:cn)$/i],dialogs.chuckNorrisDialogs.default)
     .matchesAny([/(?:^|\s)(?:chuck norris categories)$/i,/(?:^|\s)(?:cnc)$/i],dialogs.chuckNorrisDialogs.categories)
     .matchesAny([/(?:^|\s)(?:chuck norris joke)(?:\s)+([a-z_]+)$/i,/(?:^|\s)(?:cnj)(?:\s)+([a-z_]+)$/i,
       /(?:^|\s)(?:chuck norris joke)/i,/(?:^|\s)(?:cnj)/i],dialogs.chuckNorrisDialogs.joke)
+    //debug command
     .matchesAny([/(?:^|\s)(?:debug)/i],dialogs.debugDialogs.debug)
     .matches(/(?:^|\s)(?:debug)(?:\s)+(?:clear)/i,dialogs.debugDialogs.clearData)
+    //help command
     .matchesAny([/(?:^|\s)(?:help)/i],dialogs.help.help)
     .onDefault(dialogs.default);
 
