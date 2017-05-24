@@ -22,6 +22,40 @@ describe('#Chuck Norris Service Test (Chuck norris is testing the bot ofc...)',(
     }
   };
 
+  const httpClientToFail404 = {
+    request:()=>{
+      return new Promise((resolve,reject)=>{
+        reject(404);
+      });
+    }
+  };
+
+  const httpClientJsonParseTestOK = {
+    request:(options)=>{
+      return new Promise((resolve)=>{
+        let output=options.transformResponse('{"msg":"test"}'); 
+        resolve(output);
+      });
+    }
+  }; 
+
+  const httpClientJsonParseTestFail = {
+    request:(options)=>{
+      return new Promise((resolve)=>{
+        let output=options.transformResponse('12312:asdas:AD.ASd"asd123'); 
+        resolve(output);
+      });
+    }
+  }; 
+
+  const httpClientToFailRandomError = {
+    request:()=>{
+      return new Promise((resolve,reject)=>{
+        reject(new Error('Random error.'));
+      });
+    }
+  };
+
   it('Should throw error when httpClient is undefiened',()=>{
     assert.throw(()=>{ new ChuckNorrisService(undefined);});
   }); 
@@ -82,8 +116,34 @@ describe('#Chuck Norris Service Test (Chuck norris is testing the bot ofc...)',(
 
   }); 
 
+  it('Should reject promise with a 404 when category is not found.',(done)=>{
 
-  it('Should reject promise when request is done with error',(done)=>{
+    const chuckNorris = new ChuckNorrisService(httpClientToFail404);
+    chuckNorris.getJoke('dev')
+      .then((data)=>{
+        done(`Error! should reject promise but got ${data}`);
+      }).catch((err)=>{
+        assert(err=='Category not found.');
+        done();
+      });
+
+  }); 
+
+  it('Should reject promise with error when request returns an error.',(done)=>{
+
+    const chuckNorris = new ChuckNorrisService(httpClientToFailRandomError);
+    chuckNorris.getJoke('dev')
+      .then((data)=>{
+        done(`Error! should reject promise but got ${data}`);
+      }).catch((err)=>{
+        assert.instanceOf(err,Error);
+        done();
+      });
+
+  }); 
+
+
+  it('Should reject promise when request response doesnt contain data',(done)=>{
 
     const chuckNorris = new ChuckNorrisService(httpClientToFail);
     chuckNorris.getCategories()
@@ -94,6 +154,33 @@ describe('#Chuck Norris Service Test (Chuck norris is testing the bot ofc...)',(
       });
 
   });
+
+  it('Should return valid json when httpClient receives valid data.',(done)=>{
+
+    const chuckNorris = new ChuckNorrisService(httpClientJsonParseTestOK);
+    chuckNorris.getCategories()
+      .then((data)=>{
+        assert.isDefined(data);
+        done();
+      }).catch((err)=>{
+        done(err);
+      });
+
+  });
+
+  it('Should fail to parse to json when httpClient receives invalid data.',(done)=>{
+
+    const chuckNorris = new ChuckNorrisService(httpClientJsonParseTestFail);
+    chuckNorris.getCategories()
+      .then((data)=>{
+        done(data);
+      }).catch(()=>{
+        done();
+      });
+
+  });
+
+ 
 
 });
 

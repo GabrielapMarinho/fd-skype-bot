@@ -10,9 +10,6 @@ ChuckNorrisService.prototype.getCategories= function(){
 
   let requetsUrl= buildRequestUrl(false,true);
 
-  if(!requetsUrl)
-    return Promise.reject('Could not build request url. Please report this error.');
-
   return _request(this.httpClient,requetsUrl);
   
 };
@@ -79,7 +76,7 @@ const _request = function(httpClient,url){
 
     })
     .catch((err)=>{
-      if(err.response && err.response.status)
+      if(err && err.response && err.response.status)
         return reject(err.response.status);
       return reject(err);
     });     
