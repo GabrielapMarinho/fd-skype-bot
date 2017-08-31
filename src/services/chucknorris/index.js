@@ -22,12 +22,12 @@ ChuckNorrisService.prototype.getJoke = function(category){
     return Promise.reject('Could not build request url. Please report this error.');
 
   return _request(this.httpClient,requetsUrl)
-          .then((data)=> Promise.resolve(data))
-          .catch((err)=>{
-            if(err===404)
-              return Promise.reject('Category not found.');
-            return Promise.reject(err);
-          });
+    .then((data)=> Promise.resolve(data))
+    .catch((err)=>{
+      if(err===404)
+        return Promise.reject('Category not found.');
+      return Promise.reject(err);
+    });
 
 };
 
@@ -68,18 +68,18 @@ const _request = function(httpClient,url){
         }
       }
     })
-    .then((data)=>{
+      .then((data)=>{
 
-      if(!data)
-        reject('No response.');
-      return resolve(Promise.resolve(data));
+        if(!data)
+          reject('No response.');
+        return resolve(Promise.resolve(data));
 
-    })
-    .catch((err)=>{
-      if(err && err.response && err.response.status)
-        return reject(err.response.status);
-      return reject(err);
-    });     
+      })
+      .catch((err)=>{
+        if(err && err.response && err.response.status)
+          return reject(err.response.status);
+        return reject(err);
+      });     
     
 
   });

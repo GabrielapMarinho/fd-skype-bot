@@ -4,16 +4,16 @@ module.exports =  (chuckNorris,builder)=>{
 
 
     chuckNorris.getCategories()
-    .then((response)=>{
+      .then((response)=>{
  
-      const categories=response.data.map((c)=>`* ${c}\n`).join('');
-      const reply = new builder.Message(session)
-        .textFormat(builder.TextFormat.markdown).text(`### Categories that can handle Chuck Norris:\n\n${categories}`);
+        const categories=response.data.map((c)=>`* ${c}\n`).join('');
+        const reply = new builder.Message(session)
+          .textFormat(builder.TextFormat.markdown).text(`### Categories that can handle Chuck Norris:\n\n${categories}`);
 
-      session.endDialog(reply);
+        session.endDialog(reply);
 
-    })
-    .catch((err)=>{session.endDialog(`Error: ${err}`);});
+      })
+      .catch((err)=>{session.endDialog(`Error: ${err}`);});
 
 
   };
@@ -40,9 +40,9 @@ module.exports =  (chuckNorris,builder)=>{
       session.endDialog(response.data.value);
 
     })
-    .catch((err)=>{
-      session.endDialog(`Error: ${err}`);
-    });
+      .catch((err)=>{
+        session.endDialog(`Error: ${err}`);
+      });
   };
 
   const _defaultDialog =function(session){

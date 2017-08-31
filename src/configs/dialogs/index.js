@@ -1,9 +1,9 @@
- const configs = {  
-   defaultSubreddits:[
-     'aww',
-     'pics',
-     'funny'
-   ]
- };
+const configs = {  
+  defaultSubreddits:[
+    'aww',
+    'pics',
+    'funny'
+  ]
+};
 
- module.exports = configs;
+module.exports = configs;

@@ -15,12 +15,12 @@ ImgurService.prototype.getSubredditGallery = function(subreddit,sort,window,page
         return JSON.parse(data);
       }
     })
-        .then((data)=>{
-          if(!data)
-            reject('No response.');
+      .then((data)=>{
+        if(!data)
+          reject('No response.');
                 
-          return resolve(Promise.resolve(data));
-        });  
+        return resolve(Promise.resolve(data));
+      });  
 
   });
 };

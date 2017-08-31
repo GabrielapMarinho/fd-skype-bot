@@ -47,27 +47,27 @@ app.post('/api/messages', connector.listen());
 
 //=================================
 bot.on('conversationUpdate', function (message) {
-   // Check for group conversations
+  // Check for group conversations
   if (message.address.conversation.isGroup) {
-        // Send a hello message when bot is added
+    // Send a hello message when bot is added
     if (message.membersAdded) {
       message.membersAdded.forEach(function (identity) {
         if (identity.id === message.address.bot.id) {
           var reply = new builder.Message()
-                            .address(message.address)
-                            .text('Hello everyone!');
+            .address(message.address)
+            .text('Hello everyone!');
           bot.send(reply);
         }
       });
     }
 
-     // Send a goodbye message when bot is removed
+    // Send a goodbye message when bot is removed
     if (message.membersRemoved) {
       message.membersRemoved.forEach(function (identity) {
         if (identity.id === message.address.bot.id) {
           var reply = new builder.Message()
-                        .address(message.address)
-                        .text('Goodbye');
+            .address(message.address)
+            .text('Goodbye');
           bot.send(reply);
         }
       });
@@ -78,8 +78,8 @@ bot.on('conversationUpdate', function (message) {
       message.membersAdded.forEach(function (identity) {
         if (identity.id !== message.address.bot.id) {
           var reply = new builder.Message()
-                            .address(message.address)
-                            .text(`Hello ${identity.name}!`);
+            .address(message.address)
+            .text(`Hello ${identity.name}!`);
           bot.send(reply);
         }
       }); 
@@ -92,17 +92,17 @@ bot.on('contactRelationUpdate', function (message) {
   if (message.action === 'add') {
     var name = message.user ? message.user.name : null;
     var reply = new builder.Message()
-                .address(message.address)
-                .text('Hello %s! Thanks for adding me.', name || 'there');
+      .address(message.address)
+      .text('Hello %s! Thanks for adding me.', name || 'there');
     bot.send(reply);
   } else {
-        //TODO:s delete their data
+    //TODO:s delete their data
   }
 });
 
 bot.on('deleteUserData', function (message) {
   console.log(message);
-    // TODO: User asked to delete their data
+  // TODO: User asked to delete their data
 });
 
 //======
@@ -113,21 +113,21 @@ bot.on('deleteUserData', function (message) {
     score = matched.length / context.message.text.length; botbuilder v3.5.4
  */
 let intents = new builder
-    .IntentDialog({ intentThreshold: 0.01 })
-    //photo command
-    .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/i], dialogs.photoDialogs.photo)
-    .matchesAny([/(?:^|\s)(?:photo$)/i], dialogs.photoDialogs.default)
-    //chuck norris command
-    .matchesAny([/(?:^|\s)(?:chuck norris)$/i,/(?:^|\s)(?:cn)$/i],dialogs.chuckNorrisDialogs.default)
-    .matchesAny([/(?:^|\s)(?:chuck norris categories)$/i,/(?:^|\s)(?:cnc)$/i],dialogs.chuckNorrisDialogs.categories)
-    .matchesAny([/(?:^|\s)(?:chuck norris joke)(?:\s)+([a-z_]+)$/i,/(?:^|\s)(?:cnj)(?:\s)+([a-z_]+)$/i,
-      /(?:^|\s)(?:chuck norris joke)/i,/(?:^|\s)(?:cnj)/i],dialogs.chuckNorrisDialogs.joke)
-    //debug command
-    .matchesAny([/(?:^|\s)(?:debug)/i],dialogs.debugDialogs.debug)
-    .matches(/(?:^|\s)(?:debug)(?:\s)+(?:clear)/i,dialogs.debugDialogs.clearData)
-    //help command
-    .matchesAny([/(?:^|\s)(?:help)/i],dialogs.help.help)
-    .onDefault(dialogs.default);
+  .IntentDialog({ intentThreshold: 0.01 })
+  //photo command
+  .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/i], dialogs.photoDialogs.photo)
+  .matchesAny([/(?:^|\s)(?:photo$)/i], dialogs.photoDialogs.default)
+  //chuck norris command
+  .matchesAny([/(?:^|\s)(?:chuck norris)$/i,/(?:^|\s)(?:cn)$/i],dialogs.chuckNorrisDialogs.default)
+  .matchesAny([/(?:^|\s)(?:chuck norris categories)$/i,/(?:^|\s)(?:cnc)$/i],dialogs.chuckNorrisDialogs.categories)
+  .matchesAny([/(?:^|\s)(?:chuck norris joke)(?:\s)+([a-z_]+)$/i,/(?:^|\s)(?:cnj)(?:\s)+([a-z_]+)$/i,
+    /(?:^|\s)(?:chuck norris joke)/i,/(?:^|\s)(?:cnj)/i],dialogs.chuckNorrisDialogs.joke)
+  //debug command
+  .matchesAny([/(?:^|\s)(?:debug)/i],dialogs.debugDialogs.debug)
+  .matches(/(?:^|\s)(?:debug)(?:\s)+(?:clear)/i,dialogs.debugDialogs.clearData)
+  //help command
+  .matchesAny([/(?:^|\s)(?:help)/i],dialogs.help.help)
+  .onDefault(dialogs.default);
 
 bot.dialog('/',intents);
 
