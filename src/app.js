@@ -11,6 +11,7 @@ const axios = require('axios');
 const ImgurService = require('./services/imgur');
 const ChuckNorrisService = require('./services/chucknorris');
 const rngHelper  = require('./helpers/rngHelper');
+const GiphyService = require('./services/giphy');
 
 //api http clients
 const imgurHttpClient = axios.create({
@@ -24,11 +25,23 @@ const chuckNorrisHttpClient = axios.create({
   timeout: configs.chucknorris.timeout,
 }); 
 
+const giphyHttpClient = axios.create({
+  baseURL: configs.giphy.baseUrl,
+  timeout:configs.giphy.timeout
+
+});
+
+giphyHttpClient.interceptors.request.use((request)=>{
+  request.url +=`&api_key=${configs.giphy.clientID}`;
+  return request;
+});
+
+const giphy = new GiphyService(giphyHttpClient);
 const imgur = new ImgurService(imgurHttpClient);
 const chuckNorris = new ChuckNorrisService(chuckNorrisHttpClient);
 
 //Dialogs
-const dialogs = require('./dialogs')(imgur,chuckNorris,builder,configs.dialogs,rngHelper,pjson);
+const dialogs = require('./dialogs')(imgur,chuckNorris,giphy,builder,configs.dialogs,rngHelper,pjson);
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -125,6 +138,9 @@ let intents = new builder
   //debug command
   .matchesAny([/(?:^|\s)(?:debug)/i],dialogs.debugDialogs.debug)
   .matches(/(?:^|\s)(?:debug)(?:\s)+(?:clear)/i,dialogs.debugDialogs.clearData)
+  //giphy
+  .matchesAny([/(?:^|\s)(?:gif)$/i],dialogs.giphyDialogs.default)
+  .matchesAny([/(?:^|\s)(?:gif)(?:\s)+([a-z_]+)$/i],dialogs.giphyDialogs.randomGif)
   //help command
   .matchesAny([/(?:^|\s)(?:help)/i],dialogs.help.help)
   .onDefault(dialogs.default);

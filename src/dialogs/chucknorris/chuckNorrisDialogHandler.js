@@ -18,7 +18,7 @@ module.exports =  (chuckNorris,builder)=>{
 
   };
 
-  const _getJokeDialog=function(session,args){
+  const _getJokeDialog = function(session,args){
 
     const category = args.matched[1] || null;
 

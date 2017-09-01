@@ -25,10 +25,10 @@ describe('#Imgur Serice Test.',()=>{
     const imgur = new ImgurService(httpClientToPass);
 
     imgur.getSubredditGallery('pics')
-        .then((data)=>{
-          if(data)
-            done(); 
-        });
+      .then((data)=>{
+        if(data)
+          done(); 
+      });
 
   });
 
@@ -37,10 +37,10 @@ describe('#Imgur Serice Test.',()=>{
     const imgur = new ImgurService(httpClientToPass);
 
     imgur.getRandomImageFromSubreddit('pics')
-        .then((data)=>{
-          if(data)
-            done(); 
-        });
+      .then((data)=>{
+        if(data)
+          done(); 
+      });
 
   });
 
@@ -49,13 +49,13 @@ describe('#Imgur Serice Test.',()=>{
     const imgur = new ImgurService(httpClientToFail);
 
     imgur.getRandomImageFromSubreddit('pics')
-        .then((data)=>{
+      .then((data)=>{
          
-          done(data); 
-        })
-        .catch(()=>{
-          done();
-        });
+        done(data); 
+      })
+      .catch(()=>{
+        done();
+      });
 
   });
 
