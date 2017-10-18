@@ -1,11 +1,18 @@
 const QuotesService = function(){
  
-  this.QuotesData=require('../../data/quotesData.json');
-  console.log(this.QuotesData);
+  this.QuotesData = require('../../data/quotesData.json');
 };
 
-QuotesService.prototype.GetRandomQuote = function(){
-  return _getRandomValueFromArray(this.QuotesData);
+QuotesService.prototype.getRandomQuote = function(){
+  return new Promise((resolve,reject)=>{
+
+    const quote = _getRandomValueFromArray(this.QuotesData);
+
+    if(quote)
+      return resolve(quote);
+    else
+      return reject(); 
+  }); 
 };
 
 const _getRandomInt = function (min, max) {

@@ -12,6 +12,7 @@ const ImgurService = require('./services/imgur');
 const ChuckNorrisService = require('./services/chucknorris');
 const rngHelper  = require('./helpers/rngHelper');
 const GiphyService = require('./services/giphy');
+const QuotesService = require('./services/quotes');
 
 //api http clients
 const imgurHttpClient = axios.create({
@@ -39,9 +40,25 @@ giphyHttpClient.interceptors.request.use((request)=>{
 const giphy = new GiphyService(giphyHttpClient);
 const imgur = new ImgurService(imgurHttpClient);
 const chuckNorris = new ChuckNorrisService(chuckNorrisHttpClient);
+const quotes = new QuotesService();
 
 //Dialogs
-const dialogs = require('./dialogs')(imgur,chuckNorris,giphy,builder,configs.dialogs,rngHelper,pjson);
+const PhotoDialogHandler = require('./dialogs/photo/photoDialogHandler');
+const DebugDialogHandler = require('./dialogs/debug/debugDialogHandler');
+const HelpDialogHandler = require('./dialogs/help/helpDialogHandler');
+const ChuckNorrisDialogHandler = require('./dialogs/chucknorris/chuckNorrisDialogHandler');
+const GiphyDialogHandler = require('./dialogs/giphy/giphyDialogHandler');
+const QuotesDialogHandler = require('./dialogs/quotes/quotesDialogHandler');
+
+const handlers = [];
+handlers.push( PhotoDialogHandler(imgur,builder,configs.dialogs,rngHelper));
+handlers.push( DebugDialogHandler(pjson));
+handlers.push( HelpDialogHandler());
+handlers.push( ChuckNorrisDialogHandler(chuckNorris,builder));
+handlers.push( GiphyDialogHandler(giphy,builder));
+handlers.push( QuotesDialogHandler(quotes));
+
+const DialogsInstaller = require('./dialogs');
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -121,29 +138,16 @@ bot.on('deleteUserData', function (message) {
 //======
 
 /*
-    default intentThreshold is 0.1
-    on group chat the match score is < 0.1 so i had to tweak it to pass the intent match.
-    score = matched.length / context.message.text.length; botbuilder v3.5.4
+default intentThreshold is 0.1
+on group chat the match score is < 0.1 so i had to tweak it to pass the intent match.
+score = matched.length / context.message.text.length; botbuilder v3.5.4
  */
-let intents = new builder
-  .IntentDialog({ intentThreshold: 0.01 })
-  //photo command
-  .matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/i], dialogs.photoDialogs.photo)
-  .matchesAny([/(?:^|\s)(?:photo$)/i], dialogs.photoDialogs.default)
-  //chuck norris command
-  .matchesAny([/(?:^|\s)(?:chuck norris)$/i,/(?:^|\s)(?:cn)$/i],dialogs.chuckNorrisDialogs.default)
-  .matchesAny([/(?:^|\s)(?:chuck norris categories)$/i,/(?:^|\s)(?:cnc)$/i],dialogs.chuckNorrisDialogs.categories)
-  .matchesAny([/(?:^|\s)(?:chuck norris joke)(?:\s)+([a-z_]+)$/i,/(?:^|\s)(?:cnj)(?:\s)+([a-z_]+)$/i,
-    /(?:^|\s)(?:chuck norris joke)/i,/(?:^|\s)(?:cnj)/i],dialogs.chuckNorrisDialogs.joke)
-  //debug command
-  .matchesAny([/(?:^|\s)(?:debug)/i],dialogs.debugDialogs.debug)
-  .matches(/(?:^|\s)(?:debug)(?:\s)+(?:clear)/i,dialogs.debugDialogs.clearData)
-  //giphy
-  .matchesAny([/(?:^|\s)(?:gif)$/i],dialogs.giphyDialogs.default)
-  .matchesAny([/(?:^|\s)(?:gif)(?:\s)+([a-z_]+)$/i],dialogs.giphyDialogs.randomGif)
-  //help command
-  .matchesAny([/(?:^|\s)(?:help)/i],dialogs.help.help)
-  .onDefault(dialogs.default);
+let intents = new builder.IntentDialog({ intentThreshold: 0.01 });
+intents.onDefault((session)=>session.endDialog('Hello! Type `help` to get more info about available commands.'));
+
+const dialogInstaller = new DialogsInstaller(intents,handlers);
+
+dialogInstaller.Install(intents);
 
 bot.dialog('/',intents);
 

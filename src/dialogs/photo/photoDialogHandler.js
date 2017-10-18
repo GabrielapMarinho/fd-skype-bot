@@ -37,9 +37,14 @@ module.exports =  (imgur,builder,configs,rngHelper)=>{
     session.endDialog('Type `Photo` or `Photo [subreddit]` to get a random photo.');
   };
 
+  const _install = function(intents){
+
+    intents.matchesAny([/(?:^|\s)(?:photo)/i,/(?:^|\s)(?:photo)(?:\s)+([a-z_]+)/i], _photoDialog)
+      .matchesAny([/(?:^|\s)(?:photo$)/i], _default);
+  };
+ 
   return{
-    photo:_photoDialog,
-    default:_default
+    install:_install
   };
 
 

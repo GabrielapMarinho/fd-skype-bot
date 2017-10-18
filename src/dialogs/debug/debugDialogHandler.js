@@ -14,9 +14,13 @@ module.exports =  (pjson)=>{
     session.endDialog('User data cleared.');
   };
 
+  const _install = function (intents){
+    intents.matchesAny([/(?:^|\s)(?:debug)/i],_debugDialog)
+      .matches(/(?:^|\s)(?:debug)(?:\s)+(?:clear)/i,_clearDataDialog);
+  };
   return  {
-    debug:_debugDialog,
-    clearData:_clearDataDialog
+
+    install:_install
 
   };
 

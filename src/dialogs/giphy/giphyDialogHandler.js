@@ -32,8 +32,12 @@ module.exports = (giphy,builder)=>{
 
   };
 
+  const _install = function(intents){
+    intents.matchesAny([/(?:^|\s)(?:gif)$/i],_defaultDialog)
+      .matchesAny([/(?:^|\s)(?:gif)(?:\s)+([a-z_]+)$/i],_getRandomGifDialog);
+  };
+
   return {
-    default:_defaultDialog,
-    randomGif:_getRandomGifDialog
+    install:_install
   };
 };

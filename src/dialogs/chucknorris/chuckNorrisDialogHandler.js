@@ -23,19 +23,6 @@ module.exports =  (chuckNorris,builder)=>{
     const category = args.matched[1] || null;
 
     chuckNorris.getJoke(category).then((response)=>{
- 
-      /*const subtite = response.data.category ? response.data.category.map((c)=>`#${c}`).join(' ') : '#random';
-      const reply = new builder.Message(session)
-                    .textFormat(builder.TextFormat.markdown)
-                         .attachments([
-                           new builder.HeroCard(session)
-                          .title('Chuck Norris!')
-                          .subtitle(subtite)
-                          .text(response.data.value)
-                          .images([builder.CardImage.create(session, 'http://cdn.business2community.com/wp-content/uploads/2016/03/Vd3MJo.jpg')])
-                          
-                         ]);
-                    */
 
       session.endDialog(response.data.value);
 
@@ -48,11 +35,18 @@ module.exports =  (chuckNorris,builder)=>{
   const _defaultDialog =function(session){
     session.endDialog('Hello! To request a Chuck Norris joke, just type `chuck norris joke [category]` or `chuck norris categories` to list available categories.');
   };
+
+  const _install = function(intents){
+
+    intents.matchesAny([/(?:^|\s)(?:chuck norris)$/i,/(?:^|\s)(?:cn)$/i],_defaultDialog)
+      .matchesAny([/(?:^|\s)(?:chuck norris categories)$/i,/(?:^|\s)(?:cnc)$/i],_getCategoriesDialog)
+      .matchesAny([/(?:^|\s)(?:chuck norris joke)(?:\s)+([a-z_]+)$/i,/(?:^|\s)(?:cnj)(?:\s)+([a-z_]+)$/i,
+        /(?:^|\s)(?:chuck norris joke)/i,/(?:^|\s)(?:cnj)/i],_getJokeDialog);
+
+  };
     
   return{
-    categories:_getCategoriesDialog,
-    joke: _getJokeDialog,
-    default:_defaultDialog
+    install:_install
   };
 
 
