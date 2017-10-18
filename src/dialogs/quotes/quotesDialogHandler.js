@@ -12,7 +12,7 @@ module.exports =  (quotes)=>{
       });
   };
     
-  const _defaultDialog =function(session){
+  const _defaultDialog = function(session){
     session.endDialog('Hello! To request a quote, just type `quote`.');
   };
 
